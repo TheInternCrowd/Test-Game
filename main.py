@@ -51,7 +51,7 @@ rightTextRect.center = (X // 2, Y / 2)
 # with white color
 display_surface.fill(white)
 
-isLeft = False
+isLeft = random.choice([0, 1]) == 0
 isGameOver = False
 canPressNewKey = False
 score = 0
