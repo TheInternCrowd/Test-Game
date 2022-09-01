@@ -103,7 +103,7 @@ while True:
             quit()
 
         # checking if keydown event happened or not
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and (event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
             if canPressNewKey:
                 if event.key == pygame.K_LEFT and isLeft:
                     num = random.choice([0, 1])
