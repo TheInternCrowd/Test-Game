@@ -68,10 +68,11 @@ class Food:
     def __int__(self):
         self.position = (0, 0)
         self.color = (164, 3, 31)
-        self.randomize_position()
+        self.randomize_position([(0, 0)])
 
-    def randomize_position(self):
-        self.position = (random.randint(0, GRID_WIDTH - 1) * GRID_SIZE, random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
+    def randomize_position(self, snakePositions):
+        possibleLocations = [x for x in GRID_LOCATIONS if x not in snakePositions]
+        self.position = random.choice(possibleLocations)
 
     def draw(self, surface):
         #Uncomment apple and surface.blit to display picture of an apple instead of rectangle
@@ -103,6 +104,11 @@ SCREEN_HEIGHT = 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_HEIGHT / GRID_SIZE
 GRID_HEIGHT = SCREEN_WIDTH / GRID_SIZE
+
+GRID_LOCATIONS = []
+for x in range(int(GRID_HEIGHT)):
+    for y in range(int(GRID_WIDTH)):
+        GRID_LOCATIONS.insert(0, (float(x * GRID_SIZE), float(x * GRID_SIZE)))
 
 UP = (0, -1)
 DOWN = (0, 1)
@@ -136,7 +142,7 @@ def main():
         if snake.get_head_position() == food.position:
             snake.length += 1
             score += 1
-            food.randomize_position()
+            food.randomize_position(snake.positions)
 
         snake.draw(surface)
         food.draw(surface)
