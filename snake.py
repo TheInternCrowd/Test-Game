@@ -8,7 +8,7 @@ class Snake:
         self.length = 1
         self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-        self.color = (17, 24, 47)
+        self.color = (65, 82, 31)
 
     def get_head_position(self):
         return self.positions[0]
@@ -25,11 +25,16 @@ class Snake:
         new = (((curr[0] + (x * GRID_SIZE)) % SCREEN_WIDTH), (curr[1] + (y * GRID_SIZE)) % SCREEN_HEIGHT)
 
         if len(self.positions) > 2 and new in self.positions[2:]:
-            self.reset()
+            #self.reset()
+            pygame.quit()
+            self.game_over()
         else:
             self.positions.insert(0, new)
             if len(self.positions) > self.length:
                 self.positions.pop()
+
+    def game_over(self):
+        self.length = 0
 
     def reset(self):
         self.length = 1
@@ -38,9 +43,10 @@ class Snake:
 
     def draw(self, surface):
         for p in self.positions:
+            snake_outline = (117, 148, 56)
             r = pygame.Rect((p[0], p[1]), (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, self.color, r)
-            pygame.draw.rect(surface, (93, 216, 228), r, 1)
+            pygame.draw.rect(surface, snake_outline, r, 1)
 
     def handle_keys(self):
         for event in pygame.event.get():
@@ -61,27 +67,34 @@ class Snake:
 class Food:
     def __int__(self):
         self.position = (0, 0)
-        self.color = (223, 163, 49)
+        self.color = (164, 3, 31)
         self.randomize_position()
 
     def randomize_position(self):
         self.position = (random.randint(0, GRID_WIDTH - 1) * GRID_SIZE, random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
 
     def draw(self, surface):
+        #Uncomment apple and surface.blit to display picture of an apple instead of rectangle
+        food_outline = (80, 2, 15)
+        #apple = pygame.image.load("apple2.jfif")
+        #apple = pygame.transform.scale(apple,(GRID_SIZE, GRID_SIZE))
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.color, r)
-        pygame.draw.rect(surface, (93, 216, 228), r, 1)
+        #surface.blit(apple, r)
+        pygame.draw.rect(surface, food_outline, r, 2)
 
 
 def drawGrid(surface):
     for y in range(0, int(GRID_HEIGHT)):
         for x in range(0, int(GRID_WIDTH)):
             if (x + y) % 2 == 0:
+                tile_color = (212, 227, 236)
                 r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
-                pygame.draw.rect(surface, (93, 216, 228), r)
+                pygame.draw.rect(surface, tile_color, r)
             else:
+                tile_color = (204, 204, 204)
                 rr = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
-                pygame.draw.rect(surface, (84, 194, 205), rr)
+                pygame.draw.rect(surface, tile_color, rr)
 
 
 SCREEN_WIDTH = 480
