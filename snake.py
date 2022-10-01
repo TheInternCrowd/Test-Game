@@ -180,9 +180,6 @@ RIGHT = (1, 0)
 game_running = True
 
 
-def main():
-    #Function to start the Snake Game
-    play_game()
+#Function to start the Snake Game
+play_game()
 
-
-main()
