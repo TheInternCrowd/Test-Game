@@ -7,7 +7,7 @@ import keyword
 
 class Snake:
     def __int__(self):
-        self.length = 10
+        self.length = 1
         self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.color = (65, 82, 31)
