@@ -7,15 +7,14 @@ import keyword
 
 class Player:
     def __int__(self):
-        self.position = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
-        self.color = (65, 82, 31)
+        self.position = ((SCREEN_WIDTH - GRID_SIZE) / 2, SCREEN_HEIGHT - GRID_SIZE)
+        self.color = (20, 20, 200)
         self.alive = True
 
     def get_position(self):
         return self.position
 
     def move(self, dir):
-        # curr = self.get_position()
         # x, y = self.direction
         # new = (((curr[0] + (x * GRID_SIZE)) % SCREEN_WIDTH), (curr[1] + (y * GRID_SIZE)) % SCREEN_HEIGHT)
         #
@@ -25,6 +24,12 @@ class Player:
         #     self.positions.insert(0, new)
         #     if len(self.positions) > self.length:
         #         self.positions.pop()
+        if dir is "LEFT":
+            self.position = (COLUMN_LEFT_X, COLUMN_BOTTOM_Y)
+        elif dir is "CENTER":
+            self.position = (COLUMN_CENTER_X, COLUMN_BOTTOM_Y)
+        elif dir is "RIGHT":
+            self.position = (COLUMN_RIGHT_X, COLUMN_BOTTOM_Y)
 
         return
 
@@ -35,20 +40,21 @@ class Player:
         return
 
     def draw(self, surface):
-        # for p in self.positions:
-        #     snake_outline = (117, 148, 56)
-        #     r = pygame.Rect((p[0], p[1]), (GRID_SIZE, GRID_SIZE))
-        #     pygame.draw.rect(surface, self.color, r)
-        #     pygame.draw.rect(surface, snake_outline, r, 1)
+        player_outline = (117, 148, 56)
+        r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(surface, self.color, r)
+        pygame.draw.rect(surface, player_outline, r, 1)
         return
 
     def handle_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.move(LEFT)
+                    self.move("LEFT")
                 elif event.key == pygame.K_RIGHT:
-                    self.move(RIGHT)
+                    self.move("RIGHT")
+            else:
+                self.move("CENTER")
 
 
 # class Food:
@@ -72,16 +78,25 @@ class Player:
 #         pygame.draw.rect(surface, food_outline, r, 2)
 
 class Car:
-    def __int__(self, position):
-        self.position = position
-        self.color = (164, 3, 31) # this can be randomized later on
+    def __int__(self, spaces_back):
+        self.position = (random.choice(COLUMN_X_CHOICES), COLUMN_TOP_Y - (spaces_back * GRID_SIZE))
+        self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 
     def draw(self, surface):
+        car_outline = (80, 2, 15)
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.color, r)
-        #surface.blit(apple, r)
-        #pygame.draw.rect(surface, food_outline, r, 2)
+        pygame.draw.rect(surface, car_outline, r, 2)
 
+    def move(self):
+        self.position = (self.position[0], self.position[1] + GRID_SIZE)
+
+        if self.position[1] > SCREEN_HEIGHT:
+            self.reset_position()
+
+    def reset_position(self):
+        self.position = (random.choice(COLUMN_X_CHOICES), COLUMN_TOP_Y)
+        self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 
 def game_over():
 
@@ -115,11 +130,18 @@ def play_game():
     player = Player()
     player.__int__()
 
+    car = Car()
+    car.__int__(0)
+
+    car2 = Car()
+    car2.__int__(3)
+
     #Font for the game text
     myfont = pygame.font.SysFont("monospace", 16)
 
     #Track the score
     score = 0
+    start_time = 0
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -128,46 +150,72 @@ def play_game():
 
         if player.alive:
             clock.tick(FRAME_RATE)
+            ticks = pygame.time.get_ticks()
+            if ticks - start_time > (SPAWN_DELAY_SECONDS * 1000):
+                start_time = ticks
+
+                car.move()
+                car2.move()
+
             player.handle_keys()
             drawGrid(surface)
 
             player.draw(surface)
+            car.draw(surface)
+            car2.draw(surface)
             screen.blit(surface, (0, 0))
             text = myfont.render("Score {0}".format(score), 1, (0, 0, 0))
             screen.blit(text, (5, 10))
             pygame.display.update()
 
         else:
-            #If a car hits the player then end the game
+            # If a car hits the player then end the game
             game_over()
 
 
 def drawGrid(surface):
-    for y in range(0, int(GRID_HEIGHT)):
-        for x in range(0, int(GRID_WIDTH)):
-            if (x + y) % 2 == 0:
+    for x in range(0, int(GRID_WIDTH)):
+        for y in range(0, int(GRID_HEIGHT)):
+            tile_outline = (80, 2, 15)
+            if x == 1 or x == 4 or x == 7:
                 tile_color = (212, 227, 236)
-                r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
-                pygame.draw.rect(surface, tile_color, r)
+
             else:
                 tile_color = (204, 204, 204)
-                rr = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
-                pygame.draw.rect(surface, tile_color, rr)
+
+            r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
+            pygame.draw.rect(surface, tile_color, r)
+
+            # outline tiles to see where the road is better
+            # if((x+3) % 2 == 0):
+            #     pygame.draw.rect(surface, tile_outline, r, 2)
 
 
-SCREEN_WIDTH = 480
-SCREEN_HEIGHT = 480
+SPAWN_DELAY_SECONDS = .25
 
 GRID_SIZE = 60
+
+SCREEN_WIDTH = GRID_SIZE * 9
+SCREEN_HEIGHT = GRID_SIZE * 9
+
 GRID_WIDTH = SCREEN_HEIGHT / GRID_SIZE
 GRID_HEIGHT = SCREEN_WIDTH / GRID_SIZE
 
+COLUMN_LEFT_X = GRID_SIZE
+COLUMN_CENTER_X = (SCREEN_WIDTH - GRID_SIZE) / 2
+COLUMN_RIGHT_X = SCREEN_WIDTH - (GRID_SIZE * 2)
+COLUMN_X_CHOICES = [COLUMN_LEFT_X, COLUMN_CENTER_X, COLUMN_RIGHT_X]
+
+COLUMN_BOTTOM_Y = SCREEN_HEIGHT - GRID_SIZE
+COLUMN_TOP_Y = 0
+
+
 FRAME_RATE = 5
 
-GRID_LOCATIONS = []
-for x in range(int(GRID_HEIGHT)):
-    for y in range(int(GRID_WIDTH)):
-        GRID_LOCATIONS.insert(0, (float(x * GRID_SIZE), float(x * GRID_SIZE)))
+# GRID_LOCATIONS = []
+# for x in range(int(GRID_HEIGHT)):
+#     for y in range(int(GRID_WIDTH)):
+#         GRID_LOCATIONS.insert(0, (float(x * GRID_SIZE), float(x * GRID_SIZE)))
 
 UP = (0, -1)
 DOWN = (0, 1)
@@ -175,7 +223,5 @@ LEFT = (-1, 0)
 RIGHT = (1, 0)
 game_running = True
 
-
 #Function to start the Snake Game
 play_game()
-
