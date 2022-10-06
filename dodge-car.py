@@ -15,15 +15,6 @@ class Player:
         return self.position
 
     def move(self, dir):
-        # x, y = self.direction
-        # new = (((curr[0] + (x * GRID_SIZE)) % SCREEN_WIDTH), (curr[1] + (y * GRID_SIZE)) % SCREEN_HEIGHT)
-        #
-        # if len(self.positions) > 2 and new in self.positions[2:]:
-        #     self.alive = False
-        # else:
-        #     self.positions.insert(0, new)
-        #     if len(self.positions) > self.length:
-        #         self.positions.pop()
         if dir is "LEFT":
             self.position = (COLUMN_LEFT_X, COLUMN_BOTTOM_Y)
         elif dir is "CENTER":
@@ -34,9 +25,6 @@ class Player:
         return
 
     def reset(self):
-        # self.length = 1
-        # self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
-        # self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         return
 
     def draw(self, surface):
@@ -171,10 +159,6 @@ def drawGrid(surface):
             r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, tile_color, r)
 
-            # outline tiles to see where the road is better
-            # if((x+3) % 2 == 0):
-            #     pygame.draw.rect(surface, tile_outline, r, 2)
-
 
 SPAWN_DELAY_SECONDS = .25
 
@@ -197,11 +181,6 @@ COLUMN_TOP_Y = 0
 FRAME_RATE = 5
 
 CAR_NUM = 2
-
-# GRID_LOCATIONS = []
-# for x in range(int(GRID_HEIGHT)):
-#     for y in range(int(GRID_WIDTH)):
-#         GRID_LOCATIONS.insert(0, (float(x * GRID_SIZE), float(x * GRID_SIZE)))
 
 UP = (0, -1)
 DOWN = (0, 1)
