@@ -22,11 +22,6 @@ class Player:
         elif dir is "RIGHT":
             self.position = (COLUMN_RIGHT_X, COLUMN_BOTTOM_Y)
 
-        return
-
-    def reset(self):
-        return
-
     def draw(self, surface):
         player_outline = (117, 148, 56)
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
@@ -43,6 +38,7 @@ class Player:
                     self.move("RIGHT")
             else:
                 self.move("CENTER")
+
 
 class Car:
     def __int__(self, spaces_back):
@@ -65,26 +61,27 @@ class Car:
     def get_position(self):
         return self.position
 
+
 def game_over():
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
     myfont = pygame.font.SysFont("monospace", 16)
 
-    #Text for the game being over and asking user to play again
+    # Text for the game being over and asking user to play again
     game_over_text = myfont.render("GAME OVER", True, (255, 255, 255))
     play_again_text = myfont.render("Press Space to play again!", True, (255, 255, 255))
 
-    #Update screen with new text
+    # Update screen with new text
     pygame.display.update(screen.blit(game_over_text, (200, 200)))
     pygame.display.update(screen.blit(play_again_text, (125, 225)))
 
-    #If space is pressed then it will restart the game
+    # If space is pressed then it will restart the game
     if keyboard.is_pressed(" "):
         play_game()
 
-#Move entire game to one function
+
 def play_game():
-    #Init the game
+    # Init the game
     pygame.init()
 
     clock = pygame.time.Clock()
@@ -101,10 +98,10 @@ def play_game():
     for i in range(CAR_NUM):
         cars[i].__int__(4*i)
 
-    #Font for the game text
+    # Font for the game text
     myfont = pygame.font.SysFont("monospace", 16)
 
-    #Track the score
+    # Track the score
     score = 0
     start_time = 0
     while True:
@@ -149,7 +146,6 @@ def play_game():
 def drawGrid(surface):
     for x in range(0, int(GRID_WIDTH)):
         for y in range(0, int(GRID_HEIGHT)):
-            tile_outline = (80, 2, 15)
             if x == 1 or x == 4 or x == 7:
                 tile_color = (212, 227, 236)
 
@@ -188,5 +184,5 @@ LEFT = (-1, 0)
 RIGHT = (1, 0)
 game_running = True
 
-#Function to start the Snake Game
+# Function to start the Snake Game
 play_game()
