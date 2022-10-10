@@ -148,6 +148,8 @@ def play_game():
                 pygame.quit()
                 sys.exit()
 
+        if keyboard.is_pressed("q"):
+            sys.exit()
         if player.alive:
             clock.tick(FRAME_RATE)
             ticks = pygame.time.get_ticks()
