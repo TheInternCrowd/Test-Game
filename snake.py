@@ -131,6 +131,8 @@ def play_game():
             snake.handle_keys()
             drawGrid(surface)
             snake.move()
+            if keyboard.is_pressed("q"):
+                sys.exit()
             if snake.get_head_position() == food.position:
                 snake.length += 1
                 score += 1
