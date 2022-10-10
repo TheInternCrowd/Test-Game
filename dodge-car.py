@@ -115,7 +115,7 @@ def play_game():
         if player.alive:
             clock.tick(FRAME_RATE)
             ticks = pygame.time.get_ticks()
-            if ticks - start_time > (SPAWN_DELAY_SECONDS * 1000):
+            if ticks - start_time > (CAR_MOVE_DELAY_SECONDS * 1000):
                 start_time = ticks
 
                 for car in cars:
@@ -158,7 +158,7 @@ def drawGrid(surface):
             pygame.draw.rect(surface, tile_color, r)
 
 
-SPAWN_DELAY_SECONDS = .25
+CAR_MOVE_DELAY_SECONDS = .25
 
 GRID_SIZE = 60
 
@@ -186,5 +186,5 @@ LEFT = (-1, 0)
 RIGHT = (1, 0)
 game_running = True
 
-# Function to start the Snake Game
+# Function to start the Game
 play_game()
