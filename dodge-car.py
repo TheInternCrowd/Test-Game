@@ -23,10 +23,14 @@ class Player:
             self.position = (COLUMN_RIGHT_X, COLUMN_BOTTOM_Y)
 
     def draw(self, surface):
+        #Comment out Kazim and surface.blitz if you want to remove 8-Bit Kazim
         player_outline = (117, 148, 56)
+        kazim = pygame.image.load("8-Bit_Kazim.png")
+        kazim = pygame.transform.scale(kazim, (GRID_SIZE, GRID_SIZE))
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(surface, self.color, r)
-        pygame.draw.rect(surface, player_outline, r, 1)
+        #pygame.draw.rect(surface, self.color, r)
+        #pygame.draw.rect(surface, player_outline, r, 1)
+        surface.blit(kazim, r)
         return
 
     def handle_keys(self):
