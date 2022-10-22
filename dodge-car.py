@@ -51,9 +51,12 @@ class Car:
 
     def draw(self, surface):
         car_outline = (80, 2, 15)
+        delorean = pygame.image.load("Delorean.png")
+        delorean = pygame.transform.scale(delorean, (GRID_SIZE, GRID_SIZE))
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(surface, self.color, r)
-        pygame.draw.rect(surface, car_outline, r, 2)
+        #pygame.draw.rect(surface, self.color, r)
+        #pygame.draw.rect(surface, car_outline, r, 2)
+        surface.blit(delorean, r)
 
     def move(self):
         self.position = (self.position[0], self.position[1] + GRID_SIZE)
