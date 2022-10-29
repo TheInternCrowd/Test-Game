@@ -124,14 +124,24 @@ class Game:
     def drawGrid(self):
         for x in range(0, int(GRID_WIDTH)):
             for y in range(0, int(GRID_HEIGHT)):
+                r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
                 if x == 1 or x == 4 or x == 7:
-                    tile_color = (212, 227, 236)
+                    #This is where the roads are to be put
+                    # tile_color = (212, 227, 236)
+                    road = pygame.image.load("8-Bit_Road.png")
+                    road = pygame.transform.scale(road, (GRID_SIZE, GRID_SIZE))
+                    self.surface.blit(road, r)
 
                 else:
-                    tile_color = (204, 204, 204)
+                    #This is for other cosmetics next to the road
+                    #tile_color = (204, 204, 204)
+                    #pygame.draw.rect(self.surface, tile_color, r)
+                    grass = pygame.image.load("8-Bit_Grass.jpg")
+                    grass = pygame.transform.scale(grass, (GRID_SIZE, GRID_SIZE))
+                    self.surface.blit(grass, r)
 
-                r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
-                pygame.draw.rect(self.surface, tile_color, r)
+
+
 
     def run_game_frame(self, direction):
         for event in pygame.event.get():
@@ -165,7 +175,7 @@ class Game:
                 car.draw(self.surface)
 
             self.screen.blit(self.surface, (0, 0))
-            text = self.font.render("Score {0}".format(self.score), 1, (0, 0, 0))
+            text = self.font.render("Score {0}".format(self.score), 1, (255, 255, 255))
             self.screen.blit(text, (5, 10))
             pygame.display.update()
 
