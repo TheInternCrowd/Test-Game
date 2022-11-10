@@ -59,7 +59,7 @@ class Car:
         surface.blit(delorean, r)
 
     def move(self):
-        self.position = (self.position[0], self.position[1] + GRID_SIZE)
+        self.position = (self.position[0], self.position[1] + CAR_ADVANCED_SQUARES)
 
     def reset_position(self):
         self.position = (random.choice(COLUMN_X_CHOICES), COLUMN_TOP_Y)
@@ -69,10 +69,15 @@ class Car:
         return self.position
 
 
-CAR_NUM = 2
-CAR_MOVE_DELAY_SECONDS = .25
-
 GRID_SIZE = 60
+
+# Car needs to move one GRID_SIZE every .25 seconds
+# Car needs to advance x times in that .25 second frame
+
+CAR_NUM = 2
+CAR_MOVEMENTS_PER_DELAY = 1
+CAR_MOVE_DELAY_SECONDS = .25 / CAR_MOVEMENTS_PER_DELAY
+CAR_ADVANCED_SQUARES = GRID_SIZE / CAR_MOVEMENTS_PER_DELAY
 
 SCREEN_WIDTH = GRID_SIZE * 9
 SCREEN_HEIGHT = GRID_SIZE * 9
