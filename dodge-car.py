@@ -71,9 +71,6 @@ class Car:
 
 GRID_SIZE = 60
 
-# Car needs to move one GRID_SIZE every .25 seconds
-# Car needs to advance x times in that .25 second frame
-
 CAR_NUM = 2
 CAR_MOVEMENTS_PER_DELAY = 4
 CAR_MOVE_DELAY_SECONDS = .25 / CAR_MOVEMENTS_PER_DELAY
