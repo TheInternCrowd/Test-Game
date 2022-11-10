@@ -75,7 +75,7 @@ GRID_SIZE = 60
 # Car needs to advance x times in that .25 second frame
 
 CAR_NUM = 2
-CAR_MOVEMENTS_PER_DELAY = 1
+CAR_MOVEMENTS_PER_DELAY = 4
 CAR_MOVE_DELAY_SECONDS = .25 / CAR_MOVEMENTS_PER_DELAY
 CAR_ADVANCED_SQUARES = GRID_SIZE / CAR_MOVEMENTS_PER_DELAY
 
@@ -145,9 +145,6 @@ class Game:
                     grass = pygame.transform.scale(grass, (GRID_SIZE, GRID_SIZE))
                     self.surface.blit(grass, r)
 
-
-
-
     def run_game_frame(self, direction):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -160,24 +157,27 @@ class Game:
         if self.player.alive:
             self.clock.tick(FRAME_RATE)
             ticks = pygame.time.get_ticks()
+
+            self.player.move(direction)
+
             if ticks - self.start_time > (CAR_MOVE_DELAY_SECONDS * 1000):
                 self.start_time = ticks
                 for car in self.cars:
                     car.move()
-                    if car.get_position() == self.player.get_position():
+                    if car.get_position()[0] == self.player.get_position()[0] and \
+                            self.player.get_position()[1] - car.get_position()[1] < GRID_SIZE:
                         self.player.alive = False
                     else:
                         if car.position[1] > SCREEN_HEIGHT:
                             car.reset_position()
                             self.score += 1
 
-            self.player.move(direction)
             self.drawGrid()
-
-            self.player.draw(self.surface)
 
             for car in self.cars:
                 car.draw(self.surface)
+
+            self.player.draw(self.surface)
 
             self.screen.blit(self.surface, (0, 0))
             text = self.font.render("Score {0}".format(self.score), 1, (255, 255, 255))
