@@ -48,15 +48,14 @@ class Car:
     def __int__(self, spaces_back):
         self.position = (random.choice(COLUMN_X_CHOICES), COLUMN_TOP_Y - (spaces_back * GRID_SIZE))
         self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+        self.car_model = self.new_car()
 
     def draw(self, surface):
-        car_outline = (80, 2, 15)
-        delorean = pygame.image.load("Delorean.png")
-        delorean = pygame.transform.scale(delorean, (GRID_SIZE, GRID_SIZE))
+        #delorean = pygame.image.load("Delorean.png")
+        #delorean = pygame.transform.scale(delorean, (GRID_SIZE, GRID_SIZE))
+
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
-        #pygame.draw.rect(surface, self.color, r)
-        #pygame.draw.rect(surface, car_outline, r, 2)
-        surface.blit(delorean, r)
+        surface.blit(self.get_car(), r)
 
     def move(self):
         self.position = (self.position[0], self.position[1] + CAR_ADVANCED_SQUARES)
@@ -64,9 +63,20 @@ class Car:
     def reset_position(self):
         self.position = (random.choice(COLUMN_X_CHOICES), COLUMN_TOP_Y)
         self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+        self.car_model = self.new_car()
 
     def get_position(self):
         return self.position
+
+    def new_car(self):
+        random_car = random.randint(0, 2)
+        car_choices = ["Delorean.png", "8-Bit_Car.png", "8-Bit_Truck.png"]
+        car_model = pygame.image.load(car_choices[random_car])
+        car_model = pygame.transform.scale(car_model, (GRID_SIZE, GRID_SIZE))
+        return car_model
+
+    def get_car(self):
+        return self.car_model
 
 
 GRID_SIZE = 60
@@ -142,7 +152,7 @@ class Game:
                     grass = pygame.transform.scale(grass, (GRID_SIZE, GRID_SIZE))
                     self.surface.blit(grass, r)
 
-    def run_game_frame(self, direction):
+    def run_game_frame(self, direction, car_model):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -218,4 +228,4 @@ while True:
         else:
             key = "CENTER"
     # Run the game for one frame
-    game.run_game_frame(key)
+    game.run_game_frame(key, None)
