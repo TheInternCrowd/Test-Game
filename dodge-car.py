@@ -51,9 +51,6 @@ class Car:
         self.car_model = self.new_car()
 
     def draw(self, surface):
-        #delorean = pygame.image.load("Delorean.png")
-        #delorean = pygame.transform.scale(delorean, (GRID_SIZE, GRID_SIZE))
-
         r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))
         surface.blit(self.get_car(), r)
 
@@ -152,7 +149,7 @@ class Game:
                     grass = pygame.transform.scale(grass, (GRID_SIZE, GRID_SIZE))
                     self.surface.blit(grass, r)
 
-    def run_game_frame(self, direction, car_model):
+    def run_game_frame(self, direction):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -228,4 +225,4 @@ while True:
         else:
             key = "CENTER"
     # Run the game for one frame
-    game.run_game_frame(key, None)
+    game.run_game_frame(key)
