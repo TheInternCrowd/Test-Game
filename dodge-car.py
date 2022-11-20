@@ -66,8 +66,8 @@ class Car:
         return self.position
 
     def new_car(self):
-        random_car = random.randint(0, 2)
-        car_choices = ["Delorean.png", "8-Bit_Car.png", "8-Bit_Truck.png"]
+        random_car = random.randint(0, 4)
+        car_choices = ["Delorean.png", "8-Bit_Car.png", "8-Bit_Truck.png", "8-Bit_Car_2.png", "8-Bit_Car_3.png"]
         car_model = pygame.image.load(car_choices[random_car])
         car_model = pygame.transform.scale(car_model, (GRID_SIZE, GRID_SIZE))
         return car_model
